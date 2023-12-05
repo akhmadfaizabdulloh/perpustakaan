@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/public/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Start -->
+    <header class="bg-white absolute top-0 w-full flex items-center z-10">
+        <div class="container lg:px-16">
+          <div class="flex items-center justify-between relative">
+            <!-- justify-between : mepet kanan kiri -->
+            <div class="px-4">
+              <a href="#home" class="font-bold text-lg text-black block py-6"
+                >Perpuskita</a
+              >
+            </div>
+  
+            <div class="flex items-center px-4">
+              <button
+                id="hamburger"
+                name="hamburger"
+                type="button"
+                class="block absolute right-4 lg:hidden"
+              >
+                <span
+                  class="hamburger-line transition duration-300 ease-in-out origin-top-left"
+                ></span>
+                <span
+                  class="hamburger-line transition duration-300 ease-in-out"
+                ></span>
+                <span
+                  class="hamburger-line transition duration-300 ease-in-out origin-bottom-left"
+                ></span>
+              </button>
+  
+              <nav
+                id="nav-menu"
+                class="hidden absolute py-5 bg-white shadow-lg rounded-lg max-w-[250px] w-full right-4 top-full lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none"
+              >
+                <ul class="block lg:flex">
+                  <li class="group">
+                    <a
+                      href="#blog"
+                      class="text-base text-dark py-2 mx-8 flex group-hover:text-primary"
+                      >Blog</a
+                    >
+                  </li>
+                  <li class="group">
+                    <a
+                      href="#contact"
+                      class="text-base text-dark py-2 mx-8 flex group-hover:text-primary"
+                      >Contact</a
+                    >
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Header End -->
+      
+    <!-- Home Section Start -->
+    <section id="home" class="pt-32 pb-32 bg-green-400">
+        <div class="container lg:px-32">
+          <!-- <div class="w-full px-4">
+            <div class="max-w-xl mx-auto text-center mb-16">
+              <h2 class="font-bold text-dark text-3xl mb-4 sm:text-4xl lg:text-5xl">Gerakan Ayo Membaca!</h2>
+            </div>
+          </div> -->
+  
+          <div class="flex flex-wrap justify-start">
+
+              <div class="px-4 w-1/2 lg:w-1/4 xl:w-1/4">
+                  <div class="w-64 bg-white rounded-xl shadow-lg overflow-hidden mb-10">
+                      <img src="./img/senja-hujan.png" alt="Programming" class="w-full py-4 px-4">
+                      <div class="py-0 px-4">
+                          <h3>
+                              <a href="#" class="block mb-2 font-semibold text-xl text-dark hover:text-primary">Senja, Hujan, & Cerita yang telah usai</a>
+                          </h3>
+                          <p class="font-medium text-base text-secondary mb-4">Boy Candra</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="px-4 w-1/2 lg:w-1/4 xl:w-1/4">
+                <div class="w-64 bg-white rounded-xl shadow-lg overflow-hidden mb-10">
+                    <img src="./img/senja-hujan.png" alt="Programming" class="w-full py-4 px-4">
+                    <div class="py-0 px-4">
+                        <h3>
+                            <a href="#" class="block mb-2 font-semibold text-xl text-dark hover:text-primary">Senja, Hujan, & Cerita yang telah usai</a>
+                        </h3>
+                        <p class="font-medium text-base text-secondary mb-4">Boy Candra</p>
+                    </div>
+                  </div>
+                </div>
+            <div class="px-4 w-1/2 lg:w-1/4 xl:w-1/4">
+              <div class="w-64 bg-white rounded-xl shadow-lg overflow-hidden mb-10">
+                  <img src="./img/senja-hujan.png" alt="Programming" class="w-full py-4 px-4">
+                  <div class="py-0 px-4">
+                      <h3>
+                          <a href="#" class="block mb-2 font-semibold text-xl text-dark hover:text-primary">Senja, Hujan, & Cerita yang telah usai</a>
+                      </h3>
+                      <p class="font-medium text-base text-secondary mb-4">Boy Candra</p>
+                  </div>
+              </div>
+          </div>
+          <div class="px-4 w-1/2 lg:w-1/4 xl:w-1/4">
+            <div class="w-64 bg-white rounded-xl shadow-lg overflow-hidden mb-10">
+                <img src="./img/senja-hujan.png" alt="Programming" class="w-full py-4 px-4">
+                <div class="py-0 px-4">
+                    <h3>
+                        <a href="#" class="block mb-2 font-semibold text-xl text-dark hover:text-primary">Senja, Hujan, & Cerita yang telah usai</a>
+                    </h3>
+                    <p class="font-medium text-base text-secondary mb-4">Boy Candra</p>
+                </div>
+            </div>
+        </div>
+              <div class="px-4 w-1/2 lg:w-1/4 xl:w-1/4">
+                <div class="w-64 bg-white rounded-xl shadow-lg overflow-hidden mb-10">
+                    <img src="./img/senja-hujan.png" alt="Programming" class="w-full py-4 px-4">
+                    <div class="py-0 px-4">
+                        <h3>
+                            <a href="#" class="block mb-2 font-semibold text-xl text-dark hover:text-primary">Senja, Hujan, & Cerita yang telah usai</a>
+                        </h3>
+                        <p class="font-medium text-base text-secondary mb-4">Boy Candra</p>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+      <!-- Home Section End -->
+</body>
+</html>
