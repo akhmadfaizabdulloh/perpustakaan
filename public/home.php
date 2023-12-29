@@ -86,7 +86,7 @@ $buku = query("SELECT * FROM buku");
                       <img src="./img/<?= $row["gambar"]; ?>" alt="Sampul Buku" class="w-full py-2 px-2 lg:py-4 lg:px-4">
                       <div class="py-0 px-2 lg:px-4">
                           <h3>
-                              <a href="#" class="block mb-0 lg:mb-2 font-semibold text-base lg:text-xl text-dark hover:opacity-80"><?= $row["judul"]; ?></a>
+                              <a href="detail-buku.php?id=<?= $row["id"]; ?>" class="block mb-0 lg:mb-2 font-semibold text-base lg:text-xl text-dark hover:opacity-80"><?= $row["judul"]; ?></a>
                           </h3>
                           <p class="font-medium text-sm lg:text-base text-secondary mb-2 lg:mb-4"><?= $row["penulis"]; ?></p>
                       </div>
