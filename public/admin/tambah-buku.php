@@ -1,3 +1,46 @@
+<?php
+
+session_start();
+
+if ( !isset($_SESSION["login"]) ) {
+    header("Location: login.php");
+    exit;
+}
+
+require '../../backend/functions.php';
+
+// cek apakah tombol submit sudah ditekan atau belum
+if( isset($_POST["submit"]) ) {
+
+    // debugging (melihat isi dari $_POST)
+    // var_dump($_POST);
+    // var_dump($_FILES);
+    // // die; agar program setelahnya tidak di jalankan
+    // die; 
+
+
+    // cek apakah data berhasil di tambahkan atau tidak
+    if( tambah($_POST) > 0 ) {
+        echo "
+            <script>
+            alert('data berasil ditambahkan!');
+            document.location.href = 'daftar-buku.php';
+            </script>
+        ";
+    } else {
+        echo "
+            <script>
+            alert('data gagal ditambahkan!');
+            document.location.href = 'index.php';
+            </script>
+        ";
+    }
+    
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,44 +136,44 @@
    </div>
 
    <div class="w-full px-4 self-start lg:pl-4">
-      <form>
+      <form action="" method="post" enctype="multipart/form-data">
         <div class="flex flex-wrap">
             <div class="w-full md:w-1/2 mb-5 md:px-2">
                 <label for="judul" class="text-base font-bold text-black">Judul Buku</label>
-                <input type="text" id="judul" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Senja, Hujan, & Cerita yang telah usai">
+                <input type="text" name="judul" id="judul" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Senja, Hujan, & Cerita yang telah usai" required>
             </div>
             <div class="w-full md:w-1/2 mb-5 md:px-2">
                 <label for="penulis" class="text-base font-bold text-black">Penulis</label>
-                <input type="text" id="penulis" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Boy Candra">
+                <input type="text" name="penulis" id="penulis" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Boy Candra" required>
             </div>
             <div class="w-full md:w-1/2 mb-5 md:px-2">
-              <label for="kode-rak" class="text-base font-bold text-black">Kode Rak Buku</label>
-              <input type="text" id="kode-rak" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="E-024">
+              <label for="rak_buku" class="text-base font-bold text-black">Kode Rak Buku</label>
+              <input type="text" name="rak_buku" id="rak_buku" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="E-024" required>
           </div>
           <div class="w-full md:w-1/2 mb-5 md:px-2">
               <label for="halaman" class="text-base font-bold text-black">Jumlah Halaman</label>
-              <input type="number" id="halaman" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="239">
+              <input type="number" name="halaman"  id="halaman" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="239" required>
           </div>
           <div class="w-full md:w-1/2 mb-5 md:px-2">
             <label for="penerbit" class="text-base font-bold text-black">Penerbit</label>
-            <input type="text" id="penerbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Gramedia">
+            <input type="text" name="penerbit"  id="penerbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Gramedia" required>
          </div>
          <div class="w-full md:w-1/2 mb-5 md:px-2">
-            <label for="tahun-terbit" class="text-base font-bold text-black">Tahun Terbit</label>
-            <input type="number" id="tahun-terbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="2017">
+            <label for="tahun_terbit" class="text-base font-bold text-black">Tahun Terbit</label>
+            <input type="number" name="tahun_terbit" id="tahun_terbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="2017" required>
         </div>
         <div class="w-full md:w-1/2 mb-5 md:px-2">
          <label for="isbn" class="text-base font-bold text-black">ISBN</label>
-         <input type="text" id="isbn" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="979-794-499-9">
+         <input type="text" name="isbn"  id="isbn" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="979-794-499-9">
         </div>
         <div class="w-full md:w-1/2 mb-5 md:px-2">
-         <label for="cover-buku" class="text-base font-bold text-black">Cover Buku</label>
-         <input type="file" id="cover-buku" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Usluk usluk">
+         <label for="gambar" class="text-base font-bold text-black">Cover Buku</label>
+         <input type="file" name="gambar" id="gambar" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" required>
      </div>
      
           <div class="w-full mb-5 md:px-2">
-            <label for="subject" class="text-base font-bold text-black">Kategori</label>
-            <select id="subject" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2">
+            <label for="kategori" class="text-base font-bold text-black">Kategori</label>
+            <select name="kategori" id="kategori" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2" required>
               <option disabled selected>Pilih Salah Satu...</option>
               <option value="Fiksi">Fiksi</option>
               <option value="Non-Fiksi">Non-Fiksi</option>
@@ -140,10 +183,10 @@
           </div>
           <div class="w-full mb-5 md:px-2">
             <label for="deskripsi" class="text-base font-bold text-black">Deskripsi</label>
-            <textarea type="text" id="deskripsi" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black h-32 mt-2" placeholder="Your Message"></textarea>
+            <textarea type="text" name="deskripsi" id="deskripsi" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black h-32 mt-2" placeholder="Deskripsi Buku" required></textarea>
           </div>
           <div class="w-full md:px-2 mb-32">
-            <button href="#" id="submit" rel="noopener noreferrer" class="inline-flex items-center font-semibold text-black bg-green-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Submit</button>
+            <button type="submit" name="submit" id="submit" rel="noopener noreferrer" class="inline-flex items-center font-semibold text-black bg-green-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Submit</button>
           </div>
         </div>   
     </form>
