@@ -178,7 +178,7 @@ $buku = query("SELECT * FROM buku");
                               </defs>
                               </svg>                           
                         </a>
-                        <a href="hapus-buku.php?id=<?= $row["id"]; ?>">
+                        <a href="hapus-buku.php?id=<?= $row["id"]; ?>" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');">
                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd" d="M7.4 1C6.07452 1 5 2.07452 5 3.4H2.6H1.8C1.35817 3.4 1 3.75817 1 4.2C1 4.64183 1.35817 5 1.8 5H2.6V14.6C2.6 15.9255 3.67452 17 5 17H13C14.3255 17 15.4 15.9255 15.4 14.6V5H16.2C16.6418 5 17 4.64183 17 4.2C17 3.75817 16.6418 3.4 16.2 3.4H15.4H13C13 2.07452 11.9255 1 10.6 1H7.4ZM11.4 3.4C11.4 2.95817 11.0418 2.6 10.6 2.6H7.4C6.95817 2.6 6.6 2.95817 6.6 3.4H11.4ZM5 5H4.2V14.6C4.2 15.0418 4.55817 15.4 5 15.4H13C13.4418 15.4 13.8 15.0418 13.8 14.6V5H13H5Z" fill="#333434" stroke="#333434"/>
                               </svg>                           
