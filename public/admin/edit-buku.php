@@ -9,28 +9,35 @@
 
 require '../../backend/functions.php';
 
+// ambil data ID di URL
+$id = $_GET["id"];
+// var_dump($id);
+
+
+// query data mahasiswa berdasarkan id
+// $mhs = query("SELECT * FROM mahasiswa WHERE id = $id");
+// var_dump($mhs[0]["nrp"]);
+
+$buku = query("SELECT * FROM buku WHERE id = $id")[0];
+// var_dump($mhs["nrp"]);
+
+
 // cek apakah tombol submit sudah ditekan atau belum
 if( isset($_POST["submit"]) ) {
 
-    // debugging (melihat isi dari $_POST)
-    // var_dump($_POST);
-    // var_dump($_FILES);
-    // // die; agar program setelahnya tidak di jalankan
-    // die; 
 
-
-    // cek apakah data berhasil di tambahkan atau tidak
-    if( tambah($_POST) > 0 ) {
+    // cek apakah data berhasil diubah atau tidak
+    if( ubah($_POST) > 0 ) {
         echo "
             <script>
-            alert('data berhasil ditambahkan!');
+            alert('data berasil diubah!');
             document.location.href = 'daftar-buku.php';
             </script>
         ";
     } else {
         echo "
             <script>
-            alert('data gagal ditambahkan!');
+            alert('data tidak ada yang diubah!');
             document.location.href = 'daftar-buku.php';
             </script>
         ";
@@ -39,14 +46,25 @@ if( isset($_POST["submit"]) ) {
 
 }
 
+$status = $buku["ketersediaan"];
+
+if ($status === "1") {
+   $status_buku = '<p class="p-4 font-medium text-sm lg:text-base text-green-700 mb-2 lg:mb-4">Tersedia</p>';
+} elseif ($status === "2") {
+   $status_buku = '<p class="p-4 font-medium text-sm lg:text-base text-yellow-500 mb-2 lg:mb-4">Sedang Dipinjam</p>';
+} else {
+   $status_buku = '<p class="p-4 font-medium text-sm lg:text-base text-red-700 mb-2 lg:mb-4">Tidak Tersedia</p>';
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Page - Tambah Buku</title>
+  <title>Admin Page - Edit Buku</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -132,48 +150,54 @@ if( isset($_POST["submit"]) ) {
  <div class="p-4 sm:ml-64">
 
     <div class="px-2  block py-4">
-      <p class="mb-4 text-lg font-medium text-black">Tambah Buku</p>
+      <p class="mb-4 text-lg font-medium text-black">Edit Buku</p>
    </div>
 
    <div class="w-full px-4 self-start lg:pl-4">
       <form action="" method="post" enctype="multipart/form-data">
+
+      <input type="hidden" name="id" value="<?= $buku["id"]; ?>">
+
+        <!-- untuk  mengirimkan namaGambarLama ke func ubah(), supaya saat tidak menginputkan gambar baru, gambar lama yang tetap di pake   -->
+        <input type="hidden" name="gambarLama" value="<?= $buku["gambar"]; ?>">
+
+        <input type="hidden" name="ketersediaan" value="<?= $buku["ketersediaan"]; ?>">
+
+        <input type="hidden" name="kategori" value="<?= $buku["kategori"]; ?>">
+
         <div class="flex flex-wrap">
             <div class="w-full md:w-1/2 mb-5 md:px-2">
                 <label for="judul" class="text-base font-bold text-black">Judul Buku</label>
-                <input type="text" name="judul" id="judul" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Senja, Hujan, & Cerita yang telah usai" required>
+                <input type="text" name="judul" id="judul" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["judul"]; ?>" required>
             </div>
             <div class="w-full md:w-1/2 mb-5 md:px-2">
                 <label for="penulis" class="text-base font-bold text-black">Penulis</label>
-                <input type="text" name="penulis" id="penulis" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Boy Candra" required>
+                <input type="text" name="penulis" id="penulis" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["penulis"]; ?>" required>
             </div>
             <div class="w-full md:w-1/2 mb-5 md:px-2">
               <label for="rak_buku" class="text-base font-bold text-black">Kode Rak Buku</label>
-              <input type="text" name="rak_buku" id="rak_buku" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="E-024" required>
+              <input type="text" name="rak_buku" id="rak_buku" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["rak_buku"]; ?>"required>
           </div>
           <div class="w-full md:w-1/2 mb-5 md:px-2">
               <label for="halaman" class="text-base font-bold text-black">Jumlah Halaman</label>
-              <input type="number" name="halaman"  id="halaman" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="239" required>
+              <input type="number" name="halaman"  id="halaman" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["halaman"]; ?>" required>
           </div>
           <div class="w-full md:w-1/2 mb-5 md:px-2">
             <label for="penerbit" class="text-base font-bold text-black">Penerbit</label>
-            <input type="text" name="penerbit"  id="penerbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Gramedia" required>
+            <input type="text" name="penerbit"  id="penerbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["penerbit"]; ?>" required>
          </div>
          <div class="w-full md:w-1/2 mb-5 md:px-2">
             <label for="tahun_terbit" class="text-base font-bold text-black">Tahun Terbit</label>
-            <input type="number" name="tahun_terbit" id="tahun_terbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="2017" required>
+            <input type="number" name="tahun_terbit" id="tahun_terbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["tahun_terbit"]; ?>" required>
         </div>
         <div class="w-full md:w-1/2 mb-5 md:px-2">
          <label for="isbn" class="text-base font-bold text-black">ISBN</label>
-         <input type="text" name="isbn"  id="isbn" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="979-794-499-9" required>
+         <input type="text" name="isbn"  id="isbn" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["isbn"]; ?>" required>
         </div>
         <div class="w-full md:w-1/2 mb-5 md:px-2">
-         <label for="gambar" class="text-base font-bold text-black">Cover Buku</label>
-         <input type="file" name="gambar" id="gambar" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" required>
-     </div>
-     
-          <div class="w-full mb-5 md:px-2">
             <label for="kategori" class="text-base font-bold text-black">Kategori</label>
-            <select name="kategori" id="kategori" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2" required>
+            <p class="p-4 text-base font-semibold text-yellow-500"><?= $buku["kategori"]; ?></p>
+            <select name="kategori" id="kategori" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2" value="<?= $buku["kategori"]; ?>">
               <option disabled selected>Pilih Salah Satu...</option>
               <option value="Fiksi">Fiksi</option>
               <option value="Non-Fiksi">Non-Fiksi</option>
@@ -181,12 +205,28 @@ if( isset($_POST["submit"]) ) {
               <option value="Pendidikan">Pendidikan</option>
             </select>
           </div>
+        <div class="w-full md:w-1/2 mb-5 md:px-2">
+         <label for="gambar" class="text-base font-bold text-black">Cover Buku</label>
+         <img class="p-4" src="../img/<?= $buku['gambar']; ?>" width="200"> 
+         <input type="file" name="gambar" id="gambar" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2">
+      </div>
+     
+          <div class="w-full md:w-1/2 mb-5 md:px-2">
+            <label for="ketersediaan" class="text-base font-bold text-black">Status</label>
+            <?= $status_buku ?>
+            <select name="ketersediaan" id="kategori" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2" value="<?= $buku["ketersediaan"]; ?>">
+              <option disabled selected>Pilih Salah Satu...</option>
+              <option value="1">Tersedia</option>
+              <option value="0">Tidak Tersedia</option>
+              <option value="2">Sedang Dipinjam</option>
+            </select>
+          </div>
           <div class="w-full mb-5 md:px-2">
             <label for="deskripsi" class="text-base font-bold text-black">Deskripsi</label>
-            <textarea type="text" name="deskripsi" id="deskripsi" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black h-32 mt-2" placeholder="Deskripsi Buku" required></textarea>
+            <textarea type="text" name="deskripsi" id="deskripsi" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black h-32 mt-2"  required><?= $buku["deskripsi"]; ?></textarea>
           </div>
           <div class="w-full md:px-2 mb-32">
-            <button type="submit" name="submit" id="submit" rel="noopener noreferrer" class="inline-flex items-center font-semibold text-black bg-green-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Submit</button>
+            <button type="submit" name="submit" id="submit" rel="noopener noreferrer" class="inline-flex items-center font-semibold text-black bg-green-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out" onclick="return confirm('yakin ubah data?');">Submit</button>
           </div>
         </div>   
     </form>

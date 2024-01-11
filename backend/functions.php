@@ -138,6 +138,56 @@ function hapus($id) {
 }
 
 
+function ubah($data){
+    global $conn;
 
+    $id = $data["id"];
+    $judul = htmlspecialchars($data["judul"]);
+    $penulis = htmlspecialchars($data["penulis"]);
+    $rak_buku = htmlspecialchars($data["rak_buku"]);
+    $halaman = htmlspecialchars($data["halaman"]);
+    $ketersediaan = htmlspecialchars($data["ketersediaan"]);
+    $penerbit = htmlspecialchars($data["penerbit"]);
+    $tahun_terbit = htmlspecialchars($data["tahun_terbit"]);
+    $isbn = htmlspecialchars($data["isbn"]);
+    $kategori = htmlspecialchars($data["kategori"]);
+    $deskripsi = htmlspecialchars($data["deskripsi"]);
+
+    
+    $gambarLama = htmlspecialchars($data["gambarLama"]);
+    // tidak perlu htmlspecialchars() karna tidak di input oleh user
+
+
+    // cek apakah user pilih gambar baru atau tidak
+    if ( $_FILES['gambar']['error'] === 4) {
+        $gambar = $gambarLama;
+    } else {
+        $gambar = upload();
+    }
+
+    // $query = "INSERT INTO buku
+    //             VALUES
+    //             (0, '$gambar','$judul','$penulis','$rak_buku','1','$halaman','$penerbit','$tahun_terbit','$isbn','$kategori','$deskripsi')";
+
+
+    $query = "UPDATE buku SET
+                gambar = '$gambar',
+                judul = '$judul',
+                penulis = '$penulis',
+                rak_buku = '$rak_buku',
+                ketersediaan = '$ketersediaan',
+                halaman = '$halaman',
+                penerbit = '$penerbit',
+                tahun_terbit = '$tahun_terbit',
+                isbn = '$isbn',
+                kategori = '$kategori',
+                deskripsi = '$deskripsi'  
+              WHERE id = $id
+            ";
+
+    mysqli_query($conn, $query);
+
+    return mysqli_affected_rows($conn);
+}
 
 ?>
