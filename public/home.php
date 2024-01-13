@@ -50,16 +50,9 @@ $buku = query("SELECT * FROM buku");
                 <ul class="block lg:flex">
                   <li class="group">
                     <a
-                      href="#blog"
-                      class="text-base text-dark py-2 mx-8 flex group-hover:text-primary"
-                      >Blog</a
-                    >
-                  </li>
-                  <li class="group">
-                    <a
-                      href="#contact"
-                      class="text-base text-dark py-2 mx-8 flex group-hover:text-primary"
-                      >Contact</a
+                      href="./admin/dashboard.php"
+                      class="text-base text-dark py-2 mx-8 flex"
+                      >Dashboard</a
                     >
                   </li>
                 </ul>
