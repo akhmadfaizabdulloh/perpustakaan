@@ -4,6 +4,15 @@ require '../backend/functions.php';
 $id = $_GET["id"];
 $buku = query("SELECT * FROM buku WHERE id = $id")[0];
 
+$status = $buku["ketersediaan"];
+
+if ($status === "1") {
+   $status_buku = '<p class="font-medium text-sm lg:text-base text-green-700 mb-2 lg:mb-4">Tersedia</p>';
+} elseif ($status === "2") {
+   $status_buku = '<p class="font-medium text-sm lg:text-base text-yellow-500 mb-2 lg:mb-4">Sedang Dipinjam</p>';
+} else {
+   $status_buku = '<p class="font-medium text-sm lg:text-base text-red-700 mb-2 lg:mb-4">Tidak Tersedia</p>';
+}
 
 ?>
 
@@ -52,16 +61,9 @@ $buku = query("SELECT * FROM buku WHERE id = $id")[0];
                 <ul class="block lg:flex">
                   <li class="group">
                     <a
-                      href="#blog"
-                      class="text-base text-dark py-2 mx-8 flex group-hover:text-primary"
-                      >Blog</a
-                    >
-                  </li>
-                  <li class="group">
-                    <a
-                      href="#contact"
-                      class="text-base text-dark py-2 mx-8 flex group-hover:text-primary"
-                      >Contact</a
+                      href="./admin/dashboard.php"
+                      class="text-base text-dark py-2 mx-8 flex"
+                      >Dashboard</a
                     >
                   </li>
                 </ul>
@@ -87,7 +89,9 @@ $buku = query("SELECT * FROM buku WHERE id = $id")[0];
                   <h3 href="#" class="block mt-6 lg:mt-9 mb-0 lg:mb-2 font-semibold text-base lg:text-xl text-dark"><?= $buku["judul"]; ?></h3>
                 <p class="font-medium text-sm lg:text-base text-secondary mb-2 lg:mb-4"><?= $buku["penulis"]; ?></p>
                 <h3 href="#" class="block mb-0 lg:mb-2 font-semibold text-base lg:text-xl text-dark hover:opacity-80"><?= $buku["rak_buku"]; ?></h3>
-                <p class="font-medium text-sm lg:text-base text-secondary mb-2 lg:mb-4"><?= $buku["ketersediaan"]; ?></p>
+
+                <?= $status_buku ?>
+                
                 <div class="table w-full lg:w-1/2 text-md font-medium text-neutral-900 mb-6 ">
                   <div class="table-row-group">
                     <div class="table-row">

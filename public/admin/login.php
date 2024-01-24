@@ -91,11 +91,12 @@ if( isset($_POST["login"]) ) {
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Perpuskita</h2>
-  </div>
+  
 
   <?php if( isset($error) ) : ?>
-        <p style="color: red; font-style: italic;">username / password salah!</p>
+        <p style="margin-top: 2rem; text-align: center; color: red; font-style: italic;">username / password salah!</p>
         <?php endif; ?>
+  </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" action="" method="POST">
