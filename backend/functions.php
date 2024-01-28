@@ -5,6 +5,9 @@ $conn = mysqli_connect("localhost", "root", "root", "perpuskita");
 function query($query) {
     global $conn;
     $result = mysqli_query($conn, $query);
+    if (!$result) {
+        httpNotFound();
+    }
     $rows = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $rows[] = $row;
@@ -12,6 +15,25 @@ function query($query) {
     return $rows;
 }
 
+
+function httpNotFound()
+{
+    http_response_code(404);
+    header('Content-type: text/html');
+
+    // Generate standard apache 404 error page
+    echo <<<HTML
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    </body></html>  
+    HTML;
+
+    exit;
+}
 
 
 function tambah($data) {
