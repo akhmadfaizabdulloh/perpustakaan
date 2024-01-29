@@ -10,8 +10,13 @@ if ( !isset($_SESSION["login"]) ) {
 
 
 require '../../backend/functions.php';
-$buku = query("SELECT * FROM buku");
+$buku = query("SELECT * FROM member");
 
+// Query untuk menghitung jumlah data
+$sql = "SELECT COUNT(*) as total FROM member";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$totalData = $row["total"];
 
 ?>
 
@@ -20,7 +25,7 @@ $buku = query("SELECT * FROM buku");
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Page - Daftar Buku</title>
+  <title>Admin Page - Member</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -48,25 +53,25 @@ $buku = query("SELECT * FROM buku");
              </a>
           </li>
           <li>
-             <a href="#" class="flex items-center p-2 rounded-lg text-white bg-white group">
-                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+             <a href="daftar-buku.php" class="flex items-center p-2 rounded-lg text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                    <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                 </svg>
-                <span class="flex-1 ms-3 text-black">Daftar Buku</span>
+                <span class="flex-1 ms-3">Daftar Buku</span>
              </a>
           </li>
           <li>
-             <a href="member.php" class="flex items-center p-2 rounded-lg text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+             <a href="#" class="flex items-center p-2 rounded-lg text-white bg-white group">
+                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                    <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
                 </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Member</span>
+                <span class="flex-1 ms-3 text-black">Member</span>
                 <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
              </a>
           </li>
           <li>
             <a href="tambah-buku.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
                   <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
                   <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"/>
@@ -106,10 +111,10 @@ $buku = query("SELECT * FROM buku");
  <div class="p-4 sm:ml-64">
 
     <div class="px-2  block py-4">
-      <p class="mb-4 text-lg font-medium text-black">Daftar Buku</p>
+      <p class="mb-4 text-lg font-medium text-black">Daftar Member</p>
    </div>
 
-    <div id="table-daftar-buku" class="relative overflow-x-auto">
+    <div class="relative overflow-x-auto">
        <table class="w-full text-sm text-left rtl:text-righ">
            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                <tr>
@@ -117,26 +122,38 @@ $buku = query("SELECT * FROM buku");
                        No.
                    </th>
                    <th scope="col" class="px-6 py-3">
-                       Judul Buku
+                       Nama Lengkap
                    </th>
                    <th scope="col" class="px-6 py-3">
-                       Penulis
+                       Alamat
                    </th>
                    <th scope="col" class="px-6 py-3">
-                       Kode rak buku
+                       No. Telepon
                    </th>
                    <th scope="col" class="px-6 py-3">
-                       Ketersediaan
+                       Gender
                    </th>
                    <th scope="col" class="px-6 py-3">
-                     Aksi
+                       Aksi
                  </th>
                </tr>
            </thead>
 
            <tbody>
-            
-            <?php $i = 1; ?>
+
+           <?php
+           if ($totalData == 0) {
+            // echo "<script>alert('Data Kosong!');</script>";
+            // echo "Data Kosong";
+            $pesan = '
+            <div class="flex justify-center items-center">
+            <img src="../asset/data-kosong.png" style="width: 11rem;margin-top: 7rem;" alt="Data kosong">
+            </div>
+            <p class="mt-2 font-medium text-black text-center">Data kosong</p>';
+           } else {
+            ?>
+
+           <?php $i = 1; ?>
             <?php foreach ($buku as $row) :   
                $status = $row["ketersediaan"];
 
@@ -147,34 +164,32 @@ $buku = query("SELECT * FROM buku");
                } else {
                    $status_buku = '<button class="px-4 py-2 bg-red-500 rounded-full">Tidak Tersedia</button>';
                }?>
-               
-            
 
                <tr class="bg-white border-b">
-                   <td class="px-6 py-4">
-                     <?= $i ?>
-                   </td>
                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                     <?= $row["judul"]; ?>
+                     1
                    </th>
                    <td class="px-6 py-4">
-                     <?= $row["penulis"]; ?>
+                     <?= $row["nama_lengkap"]; ?>
                    </td>
                    <td class="px-6 py-4">
-                     <?= $row["rak_buku"]; ?>
+                     Jalan Raya Srandakan Km.1 Trimurti.
                    </td>
                    <td class="px-6 py-4">
-                     
+                     08238175312
+                   </td>
+                   <td class="px-6 py-4">
+                     <button class="px-4 py-2 bg-green-500 rounded-full">Laki - Laki</button>
                    </td>
                    <td class="px-6 py-4">
                      <div class="flex gap-x-4">
-                        <a href="detail-buku.php?id=<?= $row["id"]; ?>">
+                        <a href="#">
                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M1.48446 9.30824C1.39438 9.19698 1.31288 9.09368 1.24039 9C1.31288 8.90632 1.39438 8.80302 1.48446 8.69175C1.91801 8.15628 2.54388 7.44437 3.31349 6.73557C4.88844 5.28506 6.89993 4 9 4C11.1001 4 13.1116 5.28506 14.6865 6.73557C15.4561 7.44437 16.082 8.15628 16.5155 8.69175C16.6056 8.80302 16.6871 8.90632 16.7596 9C16.6871 9.09368 16.6056 9.19698 16.5155 9.30824C16.082 9.84372 15.4561 10.5556 14.6865 11.2644C13.1116 12.7149 11.1001 14 9 14C6.89993 14 4.88844 12.7149 3.31349 11.2644C2.54388 10.5556 1.91801 9.84372 1.48446 9.30824Z" stroke="#333434" stroke-width="2"/>
                               <path d="M11.75 9C11.75 10.5188 10.5188 11.75 9 11.75C7.48122 11.75 6.25 10.5188 6.25 9C6.25 7.48122 7.48122 6.25 9 6.25C10.5188 6.25 11.75 7.48122 11.75 9Z" stroke="#333434" stroke-width="2"/>
                               </svg>
                         </a>
-                        <a href="edit-buku.php?id=<?= $row["id"]; ?>">
+                        <a href="#">
                            <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <g clip-path="url(#clip0_738_5210)">
                               <path d="M16.6224 6.43694L15.4007 4.88445C15.2525 4.69649 15.0358 4.57508 14.7981 4.54691C14.5604 4.51875 14.3213 4.58613 14.1333 4.73425L13.1589 5.50106L15.4978 8.46954L16.4714 7.70349C16.863 7.39459 16.9308 6.82837 16.6224 6.43694ZM4.74879 12.124L7.08656 15.0927L14.7897 9.02703L12.4511 6.05762L4.74816 12.1243L4.74879 12.124ZM3.42938 14.3642L2.72841 16.1187L4.5989 15.8482L6.33607 15.5983L4.08023 12.7324L3.42938 14.3642Z" fill="#333434"/>
@@ -186,21 +201,25 @@ $buku = query("SELECT * FROM buku");
                               </defs>
                               </svg>                           
                         </a>
-                        <a href="hapus-buku.php?id=<?= $row["id"]; ?>" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');">
+                        <a href="#" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');">
                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" clip-rule="evenodd" d="M7.4 1C6.07452 1 5 2.07452 5 3.4H2.6H1.8C1.35817 3.4 1 3.75817 1 4.2C1 4.64183 1.35817 5 1.8 5H2.6V14.6C2.6 15.9255 3.67452 17 5 17H13C14.3255 17 15.4 15.9255 15.4 14.6V5H16.2C16.6418 5 17 4.64183 17 4.2C17 3.75817 16.6418 3.4 16.2 3.4H15.4H13C13 2.07452 11.9255 1 10.6 1H7.4ZM11.4 3.4C11.4 2.95817 11.0418 2.6 10.6 2.6H7.4C6.95817 2.6 6.6 2.95817 6.6 3.4H11.4ZM5 5H4.2V14.6C4.2 15.0418 4.55817 15.4 5 15.4H13C13.4418 15.4 13.8 15.0418 13.8 14.6V5H13H5Z" fill="#333434" stroke="#333434"/>
                               </svg>                           
                         </a>
                      </div>                     
-                   </td>    
+                   </td>  
                </tr>
-
+               
             <?php $i++; ?>
             <?php endforeach; ?>
 
+            <?php } ?>
 
            </tbody>
        </table>
+
+       <?= $pesan ?>
+       
     </div>
 
  </div>
