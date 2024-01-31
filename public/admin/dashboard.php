@@ -10,13 +10,19 @@ if ( !isset($_SESSION["login"]) ) {
 require '../../backend/functions.php';
 $buku = query("SELECT * FROM buku");
 
-// Query untuk menghitung jumlah data
+// Query untuk menghitung jumlah buku
 $sql = "SELECT COUNT(*) as total FROM buku";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
-$totalData = $row["total"];
+$totalBuku = $row["total"];
 
+// Query untuk menghitung jumlah member
+$sql = "SELECT COUNT(*) as total FROM member";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$totalMember = $row["total"];
 
+$pesan = "";
 
 ?>
 
@@ -119,12 +125,12 @@ $totalData = $row["total"];
         <div class="flex flex-col sm:flex-row justify-between show-on-scroll">
 
           <div class="flex flex-col items-center w-full mb-10">
-            <p class="font-bold text-4xl lg:text-5xl mt-5"><?= $totalData; ?></p>
+            <p class="font-bold text-4xl lg:text-5xl mt-5"><?= $totalBuku; ?></p>
             <p class="text-base mt-1">Total Buku</p>
           </div>
   
           <div class="flex flex-col items-center w-full mb-10">
-            <p class="font-bold text-4xl lg:text-5xl mt-5">-</p>
+            <p class="font-bold text-4xl lg:text-5xl mt-5"><?= $totalMember; ?></p>
             <p class="text-base mt-1">Total Member</p>
           </div>
           
@@ -171,6 +177,16 @@ $totalData = $row["total"];
            </thead>
 
            <tbody>
+            
+           <?php
+            if ($totalBuku == 0) {
+               $pesan = '
+               <div class="flex justify-center items-center">
+               <img src="../asset/data-kosong.png" style="width: 11rem;margin-top: 7rem;" alt="Data kosong">
+               </div>
+               <p class="mt-2 font-medium text-black text-center" style="margin-bottom: 7rem;">Data kosong</p>';
+            } else {
+            ?>
             
             <?php $i = 1; ?>
             <?php foreach ($buku as $row) :   
@@ -234,9 +250,14 @@ $totalData = $row["total"];
             <?php $i++; ?>
             <?php endforeach; ?>
 
+            <?php } ?>
+
 
            </tbody>
        </table>
+
+       <?= $pesan ?>
+
     </div>
 
     <div class="px-2 block py-4 mt-8">
@@ -264,7 +285,32 @@ $totalData = $row["total"];
                 </th>
               </tr>
           </thead>
+
           <tbody>
+            
+            <?php
+            if ($totalMember == 0) {
+               $pesan = '
+               <div class="flex justify-center items-center">
+               <img src="../asset/data-kosong.png" style="width: 11rem;margin-top: 7rem;" alt="Data kosong">
+               </div>
+               <p class="mt-2 font-medium text-black text-center" style="margin-bottom: 7rem;">Data kosong</p>';
+            } else {
+            ?>
+
+            <?php $i = 1; ?>
+            <?php foreach ($member as $row) :   
+               $status = $row["ketersediaan"];
+
+               if ($status === "1") {
+                   $status_buku = '<button class="px-4 py-2 bg-green-500 rounded-full">Tersedia</button>';
+               } elseif ($status === "2") {
+                  $status_buku = '<button class="px-4 py-2 bg-yellow-400 rounded-full">Sedang Dipinjam</button>';
+               } else {
+                   $status_buku = '<button class="px-4 py-2 bg-red-500 rounded-full">Tidak Tersedia</button>';
+               }?>
+
+
               <tr class="bg-white border-b">
                   <td class="px-6 py-4">
                     -
@@ -282,8 +328,18 @@ $totalData = $row["total"];
                     -
                   </td>
               </tr>
+
+
+            <?php $i++; ?>
+            <?php endforeach; ?>
+
+            <?php } ?>
+
           </tbody>
       </table>
+
+      <?= $pesan ?>
+
    </div>
 
  </div>

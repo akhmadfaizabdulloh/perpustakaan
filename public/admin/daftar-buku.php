@@ -164,7 +164,7 @@ $buku = query("SELECT * FROM buku");
                      <?= $row["rak_buku"]; ?>
                    </td>
                    <td class="px-6 py-4">
-                     
+                     <?= $status_buku; ?>
                    </td>
                    <td class="px-6 py-4">
                      <div class="flex gap-x-4">

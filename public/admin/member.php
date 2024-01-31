@@ -10,7 +10,7 @@ if ( !isset($_SESSION["login"]) ) {
 
 
 require '../../backend/functions.php';
-$buku = query("SELECT * FROM member");
+$member = query("SELECT * FROM member");
 
 // Query untuk menghitung jumlah data
 $sql = "SELECT COUNT(*) as total FROM member";
@@ -149,12 +149,12 @@ $totalData = $row["total"];
             <div class="flex justify-center items-center">
             <img src="../asset/data-kosong.png" style="width: 11rem;margin-top: 7rem;" alt="Data kosong">
             </div>
-            <p class="mt-2 font-medium text-black text-center">Data kosong</p>';
-           } else {
+            <p class="mt-2 font-medium text-black text-center" style="margin-bottom: 7rem;">Data kosong</p>';
+         } else {
             ?>
 
            <?php $i = 1; ?>
-            <?php foreach ($buku as $row) :   
+            <?php foreach ($member as $row) :   
                $status = $row["ketersediaan"];
 
                if ($status === "1") {
