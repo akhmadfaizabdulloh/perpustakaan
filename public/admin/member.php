@@ -18,6 +18,8 @@ $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $totalData = $row["total"];
 
+$pesan = "";
+
 ?>
 
 <!DOCTYPE html>
@@ -155,31 +157,29 @@ $totalData = $row["total"];
 
            <?php $i = 1; ?>
             <?php foreach ($member as $row) :   
-               $status = $row["ketersediaan"];
+               $gender = $row["jenis_kelamin"];
 
-               if ($status === "1") {
-                   $status_buku = '<button class="px-4 py-2 bg-green-500 rounded-full">Tersedia</button>';
-               } elseif ($status === "2") {
-                  $status_buku = '<button class="px-4 py-2 bg-yellow-400 rounded-full">Sedang Dipinjam</button>';
+               if ($gender === "1") {
+                   $jenis_kelamin = '<button class="px-4 py-2 bg-green-500 rounded-full">Laki - Laki</button>';
                } else {
-                   $status_buku = '<button class="px-4 py-2 bg-red-500 rounded-full">Tidak Tersedia</button>';
+                   $jenis_kelamin = '<button class="px-4 py-2 bg-yellow-400 rounded-full">Perempuan</button>';
                }?>
 
                <tr class="bg-white border-b">
                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                     1
+                     <?= $i ?>
                    </th>
                    <td class="px-6 py-4">
                      <?= $row["nama_lengkap"]; ?>
                    </td>
                    <td class="px-6 py-4">
-                     Jalan Raya Srandakan Km.1 Trimurti.
+                     <?= $row["alamat_lengkap"]; ?>
                    </td>
                    <td class="px-6 py-4">
-                     08238175312
+                     <?= $row["no_telepon"]; ?>
                    </td>
                    <td class="px-6 py-4">
-                     <button class="px-4 py-2 bg-green-500 rounded-full">Laki - Laki</button>
+                     <?= $jenis_kelamin; ?>
                    </td>
                    <td class="px-6 py-4">
                      <div class="flex gap-x-4">
