@@ -9,6 +9,7 @@ if ( !isset($_SESSION["login"]) ) {
 
 require '../../backend/functions.php';
 $buku = query("SELECT * FROM buku");
+$member = query("SELECT * FROM member");
 
 // Query untuk menghitung jumlah buku
 $sql = "SELECT COUNT(*) as total FROM buku";
@@ -300,34 +301,59 @@ $pesan = "";
 
             <?php $i = 1; ?>
             <?php foreach ($member as $row) :   
-               $status = $row["ketersediaan"];
+               $gender = $row["jenis_kelamin"];
 
-               if ($status === "1") {
-                   $status_buku = '<button class="px-4 py-2 bg-green-500 rounded-full">Tersedia</button>';
-               } elseif ($status === "2") {
-                  $status_buku = '<button class="px-4 py-2 bg-yellow-400 rounded-full">Sedang Dipinjam</button>';
+               if ($gender === "1") {
+                   $jenis_kelamin = '<button class="px-4 py-2 bg-green-500 rounded-full">Laki - Laki</button>';
                } else {
-                   $status_buku = '<button class="px-4 py-2 bg-red-500 rounded-full">Tidak Tersedia</button>';
+                   $jenis_kelamin = '<button class="px-4 py-2 bg-yellow-400 rounded-full">Perempuan</button>';
                }?>
 
 
               <tr class="bg-white border-b">
-                  <td class="px-6 py-4">
-                    -
-                  </td>
-                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    -
-                  </th>
-                  <td class="px-6 py-4">
-                    -
-                  </td>
-                  <td class="px-6 py-4">
-                    -
-                  </td>
-                  <td class="px-6 py-4">
-                    -
-                  </td>
-              </tr>
+                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                     <?= $i ?>
+                   </th>
+                   <td class="px-6 py-4">
+                     <?= $row["nama_lengkap"]; ?>
+                   </td>
+                   <td class="px-6 py-4">
+                     <?= $row["alamat_lengkap"]; ?>
+                   </td>
+                   <td class="px-6 py-4">
+                     <?= $row["no_telepon"]; ?>
+                   </td>
+                   <td class="px-6 py-4">
+                     <?= $jenis_kelamin; ?>
+                   </td>
+                   <td class="px-6 py-4">
+                     <div class="flex gap-x-4">
+                        <a href="#">
+                           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M1.48446 9.30824C1.39438 9.19698 1.31288 9.09368 1.24039 9C1.31288 8.90632 1.39438 8.80302 1.48446 8.69175C1.91801 8.15628 2.54388 7.44437 3.31349 6.73557C4.88844 5.28506 6.89993 4 9 4C11.1001 4 13.1116 5.28506 14.6865 6.73557C15.4561 7.44437 16.082 8.15628 16.5155 8.69175C16.6056 8.80302 16.6871 8.90632 16.7596 9C16.6871 9.09368 16.6056 9.19698 16.5155 9.30824C16.082 9.84372 15.4561 10.5556 14.6865 11.2644C13.1116 12.7149 11.1001 14 9 14C6.89993 14 4.88844 12.7149 3.31349 11.2644C2.54388 10.5556 1.91801 9.84372 1.48446 9.30824Z" stroke="#333434" stroke-width="2"/>
+                              <path d="M11.75 9C11.75 10.5188 10.5188 11.75 9 11.75C7.48122 11.75 6.25 10.5188 6.25 9C6.25 7.48122 7.48122 6.25 9 6.25C10.5188 6.25 11.75 7.48122 11.75 9Z" stroke="#333434" stroke-width="2"/>
+                              </svg>
+                        </a>
+                        <a href="#">
+                           <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <g clip-path="url(#clip0_738_5210)">
+                              <path d="M16.6224 6.43694L15.4007 4.88445C15.2525 4.69649 15.0358 4.57508 14.7981 4.54691C14.5604 4.51875 14.3213 4.58613 14.1333 4.73425L13.1589 5.50106L15.4978 8.46954L16.4714 7.70349C16.863 7.39459 16.9308 6.82837 16.6224 6.43694ZM4.74879 12.124L7.08656 15.0927L14.7897 9.02703L12.4511 6.05762L4.74816 12.1243L4.74879 12.124ZM3.42938 14.3642L2.72841 16.1187L4.5989 15.8482L6.33607 15.5983L4.08023 12.7324L3.42938 14.3642Z" fill="#333434"/>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_738_5210">
+                              <rect width="15.8164" height="15.8164" fill="white" transform="translate(5.31833 0.893555) rotate(19.6488)"/>
+                              </clipPath>
+                              </defs>
+                              </svg>                           
+                        </a>
+                        <a href="#" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');">
+                           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M7.4 1C6.07452 1 5 2.07452 5 3.4H2.6H1.8C1.35817 3.4 1 3.75817 1 4.2C1 4.64183 1.35817 5 1.8 5H2.6V14.6C2.6 15.9255 3.67452 17 5 17H13C14.3255 17 15.4 15.9255 15.4 14.6V5H16.2C16.6418 5 17 4.64183 17 4.2C17 3.75817 16.6418 3.4 16.2 3.4H15.4H13C13 2.07452 11.9255 1 10.6 1H7.4ZM11.4 3.4C11.4 2.95817 11.0418 2.6 10.6 2.6H7.4C6.95817 2.6 6.6 2.95817 6.6 3.4H11.4ZM5 5H4.2V14.6C4.2 15.0418 4.55817 15.4 5 15.4H13C13.4418 15.4 13.8 15.0418 13.8 14.6V5H13H5Z" fill="#333434" stroke="#333434"/>
+                              </svg>                           
+                        </a>
+                     </div>                     
+                   </td>  
+               </tr>
 
 
             <?php $i++; ?>
