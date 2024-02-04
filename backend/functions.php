@@ -150,6 +150,89 @@ function upload() {
 
 }
 
+function tambah_member($data) {
+    global $conn;
+
+    $nama_lengkap = htmlspecialchars($data["nama_lengkap"]);
+    $email = htmlspecialchars($data["email"]);
+    $username = strtolower( stripslashes($data["username"]) );
+    $no_telepon = htmlspecialchars($data["no_telepon"]);
+    $password = htmlspecialchars($data["password"]);
+    
+    $tahun_terbit = htmlspecialchars($data["tahun_terbit"]);
+    $isbn = htmlspecialchars($data["isbn"]);
+    $kategori = htmlspecialchars($data["kategori"]);
+    $deskripsi = htmlspecialchars($data["deskripsi"]);
+
+    // upload gambar
+    $gambar = upload();
+
+    // if ( $gambar === false )
+    if ( !$gambar ) {
+        return false;
+    }
+
+    $query = "INSERT INTO buku
+                VALUES
+                (0, '$username','$password','$nama_lengkap','$email','$jenis_kelamin','$no_telepon','$alamat_lengkap','$foto_profil','$is_verified')";
+
+    mysqli_query($conn, $query);
+
+    return mysqli_affected_rows($conn);
+}
+
+
+function upload_member() {
+    
+    $namaFile = $_FILES['gambar']['name'];
+    $ukuranFile = $_FILES['gambar']['size'];
+    $error = $_FILES['gambar']['error'];
+    $tmpName = $_FILES['gambar']['tmp_name'];
+
+    // cek apakah tidak ada gambar yang diupload
+    if ( $error === 4 ) {
+        echo "<script>
+                alert('pilih gambar terlebih dahulu!');
+              </script>";
+        
+        return false;
+    }
+
+    // cek apakah yang diupload adalah gambar
+    $eksensiGambarValid = ['jpg', 'jpeg', 'png'];
+
+    // explode(delimiter, string)
+    $eksensiGambar = explode('.', $namaFile);
+
+    $eksensiGambar = strtolower(end($eksensiGambar));
+
+    if( !in_array($eksensiGambar, $eksensiGambarValid) ) {
+        echo "<script>
+                alert('yang anda upload bukan gambar!');
+              </script>";
+        return false;
+    }
+
+    // cek jika ukurannya terlalu besar
+    if( $ukuranFile > 2000000 ){
+        echo "<script>
+                alert('ukuran gambar terlalu besar!');
+              </script>";
+        return false;
+    }
+    // 100.000 byte = 100 kb
+    // 1.000.000 byte = 1 MB
+
+    // generte nama gambar baru
+    $namaFileBaru = uniqid();
+    $namaFileBaru .= '.';
+    $namaFileBaru .= $eksensiGambar;
+
+    move_uploaded_file($tmpName, '../img/' . $namaFileBaru);
+
+    return $namaFileBaru;
+
+}
 
 
 function hapus($id) {
