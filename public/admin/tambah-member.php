@@ -9,25 +9,86 @@ if ( !isset($_SESSION["login"]) ) {
 
 require '../../backend/functions.php';
 
-// cek apakah tombol submit sudah ditekan atau belum
 if( isset($_POST["submit"]) ) {
-    if( tambah_member($_POST) > 0 ) {
-        echo "
-            <script>
-            alert('data berhasil ditambahkan!');
-            document.location.href = 'member.php';
-            </script>
-        ";
-    } else {
-        echo "
-            <script>
-            alert('data gagal ditambahkan!');
-            document.location.href = 'tambah-member.php';
-            </script>
-        ";
-    }
-    
+
+   $username = $_POST["username"];
+   $password = $_POST["password"];
+   $konfirmasi_password = $_POST["konfirmasi_password"];
+
+   $result = mysqli_query($conn, "SELECT * FROM member WHERE username = '$username'");
+
+   if (isset($_POST["jenis_kelamin"])) {
+      // Data "jenis_kelamin" ada, lanjutkan dengan pemrosesan
+      $jenis_kelamin = $_POST["jenis_kelamin"];
+      
+      // Lakukan operasi atau proses yang diinginkan dengan data "jenis_kelamin" di sini
+      // cek username
+      if( mysqli_num_rows($result) !== 1 ) {
+   
+         // $error = false;
+         if( $password === $konfirmasi_password ) {
+   
+            // $password_error = false;
+            if( tambah_member($_POST) > 0 ) {
+               echo "
+                  <script>
+                  alert('data berhasil ditambahkan!');
+                  document.location.href = 'member.php';
+                  </script>
+               ";
+            } else {
+                  
+                  // echo mysqli_error($conn);
+                  echo "
+                     <script>
+                     alert('data gagal ditambahkan!');
+                     document.location.href = 'tambah-member.php';
+                     </script>
+                  ";
+            }
+   
+         }
+      
+         $password_error = true;
+   
+      }
+   
+      $error = true;
+
+  } else {
+      // Jika data "jenis_kelamin" tidak dikirimkan, tampilkan pesan kesalahan
+      // echo "Error: Data 'jenis_kelamin' tidak dikirimkan.";
+      echo "
+           <script>
+           alert('pilih jenis kelamin terlebih dahulu!');
+           document.location.href = 'tambah-member.php';
+           </script>
+       ";
+       $gender_error = true;
+   }
+   
 }
+
+// cek apakah tombol submit sudah ditekan atau belum
+// if( isset($_POST["submit"]) ) {
+//    if( tambah_member($_POST) > 0 ) {
+//        echo "
+//            <script>
+//            alert('data berhasil ditambahkan!');
+//            document.location.href = 'member.php';
+//            </script>
+//        ";
+//    } else {
+//        echo "
+//            <script>
+//            alert('data gagal ditambahkan!');
+//            document.location.href = 'tambah-member.php';
+//            </script>
+//        ";
+//    }
+   
+// }
+
 
 ?>
 
@@ -137,47 +198,66 @@ if( isset($_POST["submit"]) ) {
 
    <div class="w-full px-4 self-start lg:pl-4">
 
-      <form action="" method="post" enctype="multipart/form-data">
+      <form action="" method="post">
 
         <div class="flex flex-wrap">
             <div class="w-full md:w-1/2 mb-5 md:px-2">
                 <label for="nama_lengkap" class="text-base font-bold text-black">Nama Lengkap</label>
-                <input type="text" id="nama_lengkap" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Roronoa Zoro" required>
+                <input type="text" name="nama_lengkap" id="nama_lengkap" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Roronoa Zoro" required>
             </div>
             <div class="w-full md:w-1/2 mb-5 md:px-2">
                <label for="email" class="text-base font-bold text-black">Email</label>
-               <input type="email" id="email" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="roronoazoro@gmail.com" required>
+               <input type="email" name="email" id="email" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="roronoazoro@gmail.com" required>
             </div>
             <div class="w-full md:w-1/2 mb-5 md:px-2">
                 <label for="username" class="text-base font-bold text-black">Username</label>
-                <input type="text" id="username" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="roronoa.zoro" required>
+                <input type="text" name="username" id="username" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="roronoa.zoro" required>
+
+
+               <?php if( isset($error) ) : ?>
+                  <p style="color: red; font-style: italic;">*username sudah terdaftar</p>
+               <?php endif; ?>
+
+
             </div>
             <div class="w-full md:w-1/2 mb-5 md:px-2">
                <label for="no_telepon" class="text-base font-bold text-black">No. Telepon</label>
-               <input type="number" id="no_telepon" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="082712675115" required>
+               <input type="number" name="no_telepon" id="no_telepon" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="082712675115" required>
            </div>
             <div class="w-full md:w-1/2 mb-5 md:px-2">
               <label for="password" class="text-base font-bold text-black">Password</label>
-              <input type="password" id="password" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Password Member" required>
+              <input type="password" name="password" id="password" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Password Member" required>
           </div>
           <div class="w-full md:w-1/2 mb-5 md:px-2">
               <label for="konfirmasi_password" class="text-base font-bold text-black">Konfirmasi Password</label>
-              <input type="password" id="konfirmasi_password" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Konfirmasi Password">
+              <input type="password" name="konfirmasi_password" id="konfirmasi_password" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" placeholder="Konfirmasi Password">
+              
+              
+            <?php if( isset($password_error) ) : ?>
+               <p style="color: red; font-style: italic;">*konfirmasi password tidak sesuai</p>
+            <?php endif; ?>
+
+
           </div>
           <div class="w-full md:w-1/2 mb-5 md:px-2">
-            <label for="gender" class="text-base font-bold text-black">Jenis Kelamin</label>
-            <select id="gender" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2">
+            <label for="jenis_kelamin" class="text-base font-bold text-black">Jenis Kelamin</label>
+            <select name="jenis_kelamin" id="jenis_kelamin" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2" required>
               <option disabled selected>Pilih Salah Satu...</option>
-              <option value="laki-laki">Laki - Laki</option>
-              <option value="perempuan">Perempuan</option>
+              <option value="1">Laki - Laki</option>
+              <option value="2">Perempuan</option>
             </select>
+
+            <?php if( isset($gender_error) ) : ?>
+               <p style="color: red; font-style: italic;">*Pilih Salah Satu...</p>
+            <?php endif; ?>
+
           </div>
           <div class="ww-full md:w-1/2 mb-5 md:px-2">
-            <label for="alamat" class="text-base font-bold text-black">Alamat Lengkap</label>
-            <textarea type="text" id="alamat" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black h-32 mt-2" placeholder="Jl. Samurai Pulau Langit Pasuruan"></textarea>
+            <label for="alamat_lengkap" class="text-base font-bold text-black">Alamat Lengkap</label>
+            <textarea type="text" name="alamat_lengkap" id="alamat_lengkap" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black h-32 mt-2" placeholder="Jl. Samurai Pulau Langit Pasuruan" required></textarea>
           </div>
           <div class="w-full md:px-2 mb-32">
-            <button href="#" id="submit" rel="noopener noreferrer" class="inline-flex items-center font-semibold text-black bg-green-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Submit</button>
+            <button name="submit" id="submit" rel="noopener noreferrer" class="inline-flex items-center font-semibold text-black bg-green-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out">Submit</button>
           </div>
         </div>   
     </form>

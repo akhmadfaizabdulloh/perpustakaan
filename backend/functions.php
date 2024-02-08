@@ -157,24 +157,19 @@ function tambah_member($data) {
     $email = htmlspecialchars($data["email"]);
     $username = strtolower( stripslashes($data["username"]) );
     $no_telepon = htmlspecialchars($data["no_telepon"]);
-    $password = htmlspecialchars($data["password"]);
+    $password = mysqli_real_escape_string($conn, $data["password"]);
+    // $password2 = mysqli_real_escape_string($conn, $data["password2"]);
     
-    $tahun_terbit = htmlspecialchars($data["tahun_terbit"]);
-    $isbn = htmlspecialchars($data["isbn"]);
-    $kategori = htmlspecialchars($data["kategori"]);
-    $deskripsi = htmlspecialchars($data["deskripsi"]);
+    $jenis_kelamin = htmlspecialchars($data["jenis_kelamin"]);
+    $alamat_lengkap = htmlspecialchars($data["alamat_lengkap"]);
 
-    // upload gambar
-    $gambar = upload();
+    // $result = mysqli_query($conn, " SELECT username FROM member WHERE username = '$username' ");
 
-    // if ( $gambar === false )
-    if ( !$gambar ) {
-        return false;
-    }
+    $password = password_hash($password, PASSWORD_DEFAULT);
 
-    $query = "INSERT INTO buku
+    $query = "INSERT INTO member
                 VALUES
-                (0, '$username','$password','$nama_lengkap','$email','$jenis_kelamin','$no_telepon','$alamat_lengkap','$foto_profil','$is_verified')";
+                (0, '$username','$password','$nama_lengkap','$email','$jenis_kelamin','$no_telepon','$alamat_lengkap', 0, 1)";
 
     mysqli_query($conn, $query);
 
