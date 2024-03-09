@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 
 if ( !isset($_SESSION["login"]) ) {
@@ -7,64 +8,19 @@ if ( !isset($_SESSION["login"]) ) {
     exit;
 }
 
+
 require '../../backend/functions.php';
+$buku = query("SELECT * FROM buku");
 
-// ambil data ID di URL
-$id = $_GET["id"];
-// var_dump($id);
-
-
-// query data mahasiswa berdasarkan id
-// $mhs = query("SELECT * FROM mahasiswa WHERE id = $id");
-// var_dump($mhs[0]["nrp"]);
-
-$buku = query("SELECT * FROM buku WHERE id = $id")[0];
-// var_dump($mhs["nrp"]);
-
-
-// cek apakah tombol submit sudah ditekan atau belum
-if( isset($_POST["submit"]) ) {
-
-
-    // cek apakah data berhasil diubah atau tidak
-    if( ubah($_POST) > 0 ) {
-        echo "
-            <script>
-            alert('data berasil diubah!');
-            document.location.href = 'daftar-buku.php';
-            </script>
-        ";
-    } else {
-        echo "
-            <script>
-            alert('data tidak ada yang diubah!');
-            document.location.href = 'daftar-buku.php';
-            </script>
-        ";
-    }
-    
-
-}
-
-$status = $buku["ketersediaan"];
-
-if ($status === "1") {
-   $status_buku = '<p class="p-4 font-medium text-sm lg:text-base text-green-700 mb-2 lg:mb-4">Tersedia</p>';
-} elseif ($status === "2") {
-   $status_buku = '<p class="p-4 font-medium text-sm lg:text-base text-yellow-500 mb-2 lg:mb-4">Sedang Dipinjam</p>';
-} else {
-   $status_buku = '<p class="p-4 font-medium text-sm lg:text-base text-red-700 mb-2 lg:mb-4">Tidak Tersedia</p>';
-}
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Page - Edit Buku</title>
+  <title>Admin Page - Daftar Buku</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -92,11 +48,11 @@ if ($status === "1") {
              </a>
           </li>
           <li>
-             <a href="daftar-buku.php" class="flex items-center p-2 rounded-lg text-white bg-white group">
-                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+             <a href="daftar-buku.php" class="flex items-center p-2 rounded-lg text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                    <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                 </svg>
-                <span class="flex-1 ms-3 text-black">Daftar Buku</span>
+                <span class="flex-1 ms-3">Daftar Buku</span>
              </a>
           </li>
           <li>
@@ -120,12 +76,21 @@ if ($status === "1") {
          </li>
          <li>
             <a href="tambah-member.php" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            <svg class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-white" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                <path d="M8 4.5C8 5.16304 7.73661 5.79893 7.26777 6.26777C6.79893 6.73661 6.16304 7 5.5 7C4.83696 7 4.20107 6.73661 3.73223 6.26777C3.26339 5.79893 3 5.16304 3 4.5C3 3.83696 3.26339 3.20107 3.73223 2.73223C4.20107 2.26339 4.83696 2 5.5 2C6.16304 2 6.79893 2.26339 7.26777 2.73223C7.73661 3.20107 8 3.83696 8 4.5ZM11.5 6C10.9656 5.9996 10.434 6.07708 9.922 6.23C9.69175 5.93456 9.54909 5.58039 9.51027 5.20784C9.47145 4.83528 9.53804 4.45931 9.70244 4.12275C9.86684 3.78619 10.1225 3.50255 10.4402 3.30416C10.7579 3.10576 11.1249 3.00057 11.4995 3.00057C11.8741 3.00057 12.2411 3.10576 12.5588 3.30416C12.8765 3.50255 13.1322 3.78619 13.2966 4.12275C13.461 4.45931 13.5275 4.83528 13.4887 5.20784C13.4499 5.58039 13.3073 5.93456 13.077 6.23C12.5653 6.07718 12.034 5.9997 11.5 6ZM3 8H7.257C6.44269 8.9844 5.99806 10.2225 6 11.5C6 11.834 6.03 12.16 6.087 12.477C5.89172 12.4925 5.6959 12.5002 5.5 12.5C1.5 12.5 1.5 9.575 1.5 9.575V9.5C1.5 9.10218 1.65804 8.72064 1.93934 8.43934C2.22064 8.15804 2.60218 8 3 8ZM16 11.5C16 12.6935 15.5259 13.8381 14.682 14.682C13.8381 15.5259 12.6935 16 11.5 16C10.3065 16 9.16193 15.5259 8.31802 14.682C7.47411 13.8381 7 12.6935 7 11.5C7 10.3065 7.47411 9.16193 8.31802 8.31802C9.16193 7.47411 10.3065 7 11.5 7C12.6935 7 13.8381 7.47411 14.682 8.31802C15.5259 9.16193 16 10.3065 16 11.5ZM12 9.5C12 9.36739 11.9473 9.24021 11.8536 9.14645C11.7598 9.05268 11.6326 9 11.5 9C11.3674 9 11.2402 9.05268 11.1464 9.14645C11.0527 9.24021 11 9.36739 11 9.5V11H9.5C9.36739 11 9.24021 11.0527 9.14645 11.1464C9.05268 11.2402 9 11.3674 9 11.5C9 11.6326 9.05268 11.7598 9.14645 11.8536C9.24021 11.9473 9.36739 12 9.5 12H11V13.5C11 13.6326 11.0527 13.7598 11.1464 13.8536C11.2402 13.9473 11.3674 14 11.5 14C11.6326 14 11.7598 13.9473 11.8536 13.8536C11.9473 13.7598 12 13.6326 12 13.5V12H13.5C13.6326 12 13.7598 11.9473 13.8536 11.8536C13.9473 11.7598 14 11.6326 14 11.5C14 11.3674 13.9473 11.2402 13.8536 11.1464C13.7598 11.0527 13.6326 11 13.5 11H12V9.5Z"/>
             </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Tambah Member</span>
             </a>
          </li>
+         <li>
+             <a href="#" class="flex items-center p-2 rounded-lg text-white bg-white group">
+                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                   <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="flex-1 ms-3 text-black">Peminjaman</span>
+                <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
+             </a>
+          </li>
           <li>
              <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -158,86 +123,101 @@ if ($status === "1") {
  <div class="p-4 sm:ml-64">
 
     <div class="px-2  block py-4">
-      <p class="mb-4 text-lg font-medium text-black">Edit Buku</p>
+      <p class="mb-4 text-lg font-medium text-black">Daftar Peminjaman</p>
    </div>
 
-   <div class="w-full px-4 self-start lg:pl-4">
-      <form action="" method="post" enctype="multipart/form-data">
+    <div id="table-daftar-buku" class="relative overflow-x-auto">
+       <table class="w-full text-sm text-left rtl:text-righ">
+           <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+               <tr>
+                   <th scope="col" class="px-6 py-3">
+                       No.
+                   </th>
+                   <th scope="col" class="px-6 py-3">
+                       Nama Peminjam
+                   </th>
+                   <th scope="col" class="px-6 py-3">
+                       Judul buku
+                   </th>
+                   <th scope="col" class="px-6 py-3">
+                       Tanggal Pinjam
+                   </th>
+                   <th scope="col" class="px-6 py-3">
+                       Tanggal Pengembalian
+                   </th>
+                   <th scope="col" class="px-6 py-3">
+                     Aksi
+                 </th>
+               </tr>
+           </thead>
 
-      <input type="hidden" name="id" value="<?= $buku["id"]; ?>">
+           <tbody>
+            
+            <?php $i = 1; ?>
+            <?php foreach ($buku as $row) :   
+               $status = $row["ketersediaan"];
 
-        <!-- untuk  mengirimkan namaGambarLama ke func ubah(), supaya saat tidak menginputkan gambar baru, gambar lama yang tetap di pake   -->
-        <input type="hidden" name="gambarLama" value="<?= $buku["gambar"]; ?>">
+               if ($status === "1") {
+                   $status_buku = '<button class="px-4 py-2 bg-green-500 rounded-full">Tersedia</button>';
+               } elseif ($status === "2") {
+                  $status_buku = '<button class="px-4 py-2 bg-yellow-400 rounded-full">Sedang Dipinjam</button>';
+               } else {
+                   $status_buku = '<button class="px-4 py-2 bg-red-500 rounded-full">Tidak Tersedia</button>';
+               }?>
+               
+            
 
-        <input type="hidden" name="ketersediaan" value="<?= $buku["ketersediaan"]; ?>">
+               <tr class="bg-white border-b">
+                   <td class="px-6 py-4">
+                     <?= $i ?>
+                   </td>
+                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                     <?= $row["judul"]; ?>
+                   </th>
+                   <td class="px-6 py-4">
+                     <?= $row["penulis"]; ?>
+                   </td>
+                   <td class="px-6 py-4">
+                     <?= $row["rak_buku"]; ?>
+                   </td>
+                   <td class="px-6 py-4">
+                     <?= $status_buku; ?>
+                   </td>
+                   <td class="px-6 py-4">
+                     <div class="flex gap-x-4">
+                        <a href="detail-buku.php?id=<?= $row["id"]; ?>">
+                           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M1.48446 9.30824C1.39438 9.19698 1.31288 9.09368 1.24039 9C1.31288 8.90632 1.39438 8.80302 1.48446 8.69175C1.91801 8.15628 2.54388 7.44437 3.31349 6.73557C4.88844 5.28506 6.89993 4 9 4C11.1001 4 13.1116 5.28506 14.6865 6.73557C15.4561 7.44437 16.082 8.15628 16.5155 8.69175C16.6056 8.80302 16.6871 8.90632 16.7596 9C16.6871 9.09368 16.6056 9.19698 16.5155 9.30824C16.082 9.84372 15.4561 10.5556 14.6865 11.2644C13.1116 12.7149 11.1001 14 9 14C6.89993 14 4.88844 12.7149 3.31349 11.2644C2.54388 10.5556 1.91801 9.84372 1.48446 9.30824Z" stroke="#333434" stroke-width="2"/>
+                              <path d="M11.75 9C11.75 10.5188 10.5188 11.75 9 11.75C7.48122 11.75 6.25 10.5188 6.25 9C6.25 7.48122 7.48122 6.25 9 6.25C10.5188 6.25 11.75 7.48122 11.75 9Z" stroke="#333434" stroke-width="2"/>
+                              </svg>
+                        </a>
+                        <a href="edit-buku.php?id=<?= $row["id"]; ?>">
+                           <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <g clip-path="url(#clip0_738_5210)">
+                              <path d="M16.6224 6.43694L15.4007 4.88445C15.2525 4.69649 15.0358 4.57508 14.7981 4.54691C14.5604 4.51875 14.3213 4.58613 14.1333 4.73425L13.1589 5.50106L15.4978 8.46954L16.4714 7.70349C16.863 7.39459 16.9308 6.82837 16.6224 6.43694ZM4.74879 12.124L7.08656 15.0927L14.7897 9.02703L12.4511 6.05762L4.74816 12.1243L4.74879 12.124ZM3.42938 14.3642L2.72841 16.1187L4.5989 15.8482L6.33607 15.5983L4.08023 12.7324L3.42938 14.3642Z" fill="#333434"/>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_738_5210">
+                              <rect width="15.8164" height="15.8164" fill="white" transform="translate(5.31833 0.893555) rotate(19.6488)"/>
+                              </clipPath>
+                              </defs>
+                              </svg>                           
+                        </a>
+                        <a href="hapus-buku.php?id=<?= $row["id"]; ?>" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');">
+                           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M7.4 1C6.07452 1 5 2.07452 5 3.4H2.6H1.8C1.35817 3.4 1 3.75817 1 4.2C1 4.64183 1.35817 5 1.8 5H2.6V14.6C2.6 15.9255 3.67452 17 5 17H13C14.3255 17 15.4 15.9255 15.4 14.6V5H16.2C16.6418 5 17 4.64183 17 4.2C17 3.75817 16.6418 3.4 16.2 3.4H15.4H13C13 2.07452 11.9255 1 10.6 1H7.4ZM11.4 3.4C11.4 2.95817 11.0418 2.6 10.6 2.6H7.4C6.95817 2.6 6.6 2.95817 6.6 3.4H11.4ZM5 5H4.2V14.6C4.2 15.0418 4.55817 15.4 5 15.4H13C13.4418 15.4 13.8 15.0418 13.8 14.6V5H13H5Z" fill="#333434" stroke="#333434"/>
+                              </svg>                           
+                        </a>
+                     </div>                     
+                   </td>    
+               </tr>
 
-        <input type="hidden" name="kategori" value="<?= $buku["kategori"]; ?>">
+            <?php $i++; ?>
+            <?php endforeach; ?>
 
-        <div class="flex flex-wrap">
-            <div class="w-full md:w-1/2 mb-5 md:px-2">
-                <label for="judul" class="text-base font-bold text-black">Judul Buku</label>
-                <input type="text" name="judul" id="judul" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["judul"]; ?>" required>
-            </div>
-            <div class="w-full md:w-1/2 mb-5 md:px-2">
-                <label for="penulis" class="text-base font-bold text-black">Penulis</label>
-                <input type="text" name="penulis" id="penulis" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["penulis"]; ?>" required>
-            </div>
-            <div class="w-full md:w-1/2 mb-5 md:px-2">
-              <label for="rak_buku" class="text-base font-bold text-black">Kode Rak Buku</label>
-              <input type="text" name="rak_buku" id="rak_buku" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["rak_buku"]; ?>"required>
-          </div>
-          <div class="w-full md:w-1/2 mb-5 md:px-2">
-              <label for="halaman" class="text-base font-bold text-black">Jumlah Halaman</label>
-              <input type="number" name="halaman"  id="halaman" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["halaman"]; ?>" required>
-          </div>
-          <div class="w-full md:w-1/2 mb-5 md:px-2">
-            <label for="penerbit" class="text-base font-bold text-black">Penerbit</label>
-            <input type="text" name="penerbit"  id="penerbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["penerbit"]; ?>" required>
-         </div>
-         <div class="w-full md:w-1/2 mb-5 md:px-2">
-            <label for="tahun_terbit" class="text-base font-bold text-black">Tahun Terbit</label>
-            <input type="number" name="tahun_terbit" id="tahun_terbit" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["tahun_terbit"]; ?>" required>
-        </div>
-        <div class="w-full md:w-1/2 mb-5 md:px-2">
-         <label for="isbn" class="text-base font-bold text-black">ISBN</label>
-         <input type="text" name="isbn"  id="isbn" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2" value="<?= $buku["isbn"]; ?>" required>
-        </div>
-        <div class="w-full md:w-1/2 mb-5 md:px-2">
-            <label for="kategori" class="text-base font-bold text-black">Kategori</label>
-            <p class="p-4 text-base font-semibold text-yellow-500"><?= $buku["kategori"]; ?></p>
-            <select name="kategori" id="kategori" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2" value="<?= $buku["kategori"]; ?>">
-              <option disabled selected>Pilih Salah Satu...</option>
-              <option value="Fiksi">Fiksi</option>
-              <option value="Non-Fiksi">Non-Fiksi</option>
-              <option value="Referensi">Referensi</option>
-              <option value="Pendidikan">Pendidikan</option>
-            </select>
-          </div>
-        <div class="w-full md:w-1/2 mb-5 md:px-2">
-         <label for="gambar" class="text-base font-bold text-black">Cover Buku</label>
-         <img class="p-4" src="../img/<?= $buku['gambar']; ?>" width="200"> 
-         <input type="file" name="gambar" id="gambar" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black mt-2">
-      </div>
-     
-          <div class="w-full md:w-1/2 mb-5 md:px-2">
-            <label for="ketersediaan" class="text-base font-bold text-black">Status</label>
-            <?= $status_buku ?>
-            <select name="ketersediaan" id="kategori" class="w-full text-black bg-white border-white focus:outline-none focus:ring-black focus:ring-1 block p-3 mt-2" value="<?= $buku["ketersediaan"]; ?>">
-              <option disabled selected>Pilih Salah Satu...</option>
-              <option value="1">Tersedia</option>
-              <option value="0">Tidak Tersedia</option>
-              <option value="2">Sedang Dipinjam</option>
-            </select>
-          </div>
-          <div class="w-full mb-5 md:px-2">
-            <label for="deskripsi" class="text-base font-bold text-black">Deskripsi</label>
-            <textarea type="text" name="deskripsi" id="deskripsi" class="w-full text-black p-3 focus:outline-none focus:ring-black focus:ring-1 focus:border-black h-32 mt-2"  required><?= $buku["deskripsi"]; ?></textarea>
-          </div>
-          <div class="w-full md:px-2 mb-32">
-            <button type="submit" name="submit" id="submit" rel="noopener noreferrer" class="inline-flex items-center font-semibold text-black bg-green-400 py-3 px-8 rounded-full hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out" onclick="return confirm('yakin ubah data?');">Submit</button>
-          </div>
-        </div>   
-    </form>
+
+           </tbody>
+       </table>
     </div>
 
  </div>
