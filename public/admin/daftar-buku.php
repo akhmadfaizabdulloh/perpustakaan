@@ -12,6 +12,14 @@ if ( !isset($_SESSION["login"]) ) {
 require '../../backend/functions.php';
 $buku = query("SELECT * FROM buku");
 
+// Query untuk menghitung jumlah data
+$sql = "SELECT COUNT(*) as total FROM buku";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$totalData = $row["total"];
+
+$pesan = "";
+
 
 ?>
 
@@ -152,6 +160,18 @@ $buku = query("SELECT * FROM buku");
            </thead>
 
            <tbody>
+
+           <?php
+           if ($totalData == 0) {
+            // echo "<script>alert('Data Kosong!');</script>";
+            // echo "Data Kosong";
+            $pesan = '
+            <div class="flex justify-center items-center">
+            <img src="../asset/data-kosong.png" style="width: 11rem;margin-top: 7rem;" alt="Data kosong">
+            </div>
+            <p class="mt-2 font-medium text-black text-center" style="margin-bottom: 7rem;">Data kosong</p>';
+         } else {
+            ?>
             
             <?php $i = 1; ?>
             <?php foreach ($buku as $row) :   
@@ -215,9 +235,13 @@ $buku = query("SELECT * FROM buku");
             <?php $i++; ?>
             <?php endforeach; ?>
 
+            <?php } ?>
 
            </tbody>
        </table>
+
+       <?= $pesan ?>
+       
     </div>
 
  </div>
