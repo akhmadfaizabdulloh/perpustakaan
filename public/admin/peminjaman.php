@@ -17,11 +17,14 @@ $buku = query("SELECT * FROM buku");
 //           INNER JOIN buku b ON p.id_buku = b.id 
 //           INNER JOIN member m ON p.id_member = m.id";
 
-$peminjaman = query("SELECT peminjaman.id, buku.judul, member.nama_lengkap, peminjaman.pinjam_date, peminjaman.kembali_date, peminjaman.status, peminjaman.is_confirmed 
-          FROM peminjaman
+// $peminjaman = query("SELECT peminjaman.id, buku.judul, member.nama_lengkap, peminjaman.pinjam_date, peminjaman.kembali_date, peminjaman.status, peminjaman.is_confirmed 
+//           FROM peminjaman
+//           INNER JOIN member ON peminjaman.member_id = member.id
+//           INNER JOIN buku ON peminjaman.buku_id = buku.id");
+
+$peminjaman = query("SELECT * FROM peminjaman
           INNER JOIN member ON peminjaman.member_id = member.id
           INNER JOIN buku ON peminjaman.buku_id = buku.id");
-
 
 // Query untuk menghitung jumlah data
 $sql = "SELECT COUNT(*) as total FROM peminjaman";
